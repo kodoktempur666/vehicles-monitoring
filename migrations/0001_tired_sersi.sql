@@ -1,0 +1,1 @@
+ALTER TABLE "vehicles" ALTER COLUMN "status_vehicle" SET DEFAULT 'available';
