@@ -74,6 +74,8 @@ const Management = () => {
         return <Badge variant="outline" className="bg-blue-100 text-blue-800">In Use</Badge>
       case "maintenance":
         return <Badge variant="outline" className="bg-orange-100 text-orange-800">Maintenance</Badge>
+      case "approval_pending":
+        return <Badge variant="outline" className="bg-yellow-100 text-yellow-800">Approval Pending</Badge>
       default:
         return <Badge variant="outline">{status}</Badge>
     }
