@@ -11,7 +11,7 @@ const Manager = () => {
   const [bookings, setBookings] = React.useState<any[]>([]);
   const [role, setRole] = React.useState<string>('');
   const [loading, setLoading] = React.useState<boolean>(true);
-  
+
 
   React.useEffect(() => {
     const fetchBookings = async () => {
@@ -43,7 +43,7 @@ const Manager = () => {
     if (res.success) {
       console.log(res.data);
 
-
+      window.location.reload();
     } else {
       console.error(res.message);
     }
@@ -53,7 +53,7 @@ const Manager = () => {
     const res = await updateBookingLevel2(id);
     if (res.success) {
       console.log(res.data);
-
+      window.location.reload();
     } else {
       console.error(res.message);
     }
