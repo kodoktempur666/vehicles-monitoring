@@ -1,4 +1,15 @@
-# Data Login
+# Tech Stack
+
+- Next.js
+- TypeScript
+- TailwindCSS
+- PostgreSQL
+- Drizzle ORM
+- Auth.js
+- NeonDB Serverless
+- Shadcn UI
+
+## Data Login
 
 - admin
     - email: admin@gmail.com
