@@ -22,6 +22,14 @@ npm install
 npm run dev
 ```
 
+## Database Setup
+
+```bash
+npm run db:generate
+
+npm run db:migrate
+```
+
 ## Setup .env
 
 ```bash

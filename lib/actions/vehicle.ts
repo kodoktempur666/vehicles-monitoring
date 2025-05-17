@@ -1,5 +1,8 @@
+"use server"
+
+import { auth } from "@/auth";
 import { db } from "@/db/drizzle";
-import { maintenance, vehicles } from "@/db/schema";
+import { maintenance, vehicles,  } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export const getVehicles = async () => {
@@ -102,4 +105,6 @@ export const maintenanceStatus = async (id: string) => {
     return { success: false, message: "An error occurred" };
   }
 };
+
+
 

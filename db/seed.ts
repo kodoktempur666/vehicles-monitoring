@@ -17,10 +17,8 @@ import {
   APPROVED,
 } from "./schema";
 
-// const sql = neon(config.env.databaseUrl);
+const sql = neon(config.env.databaseUrl);
 
-const DATABASE_URL = "postgresql://neondb_owner:npg_bcCG4wYv1qIe@ep-empty-surf-a44l22i0-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require"
-const sql = neon(DATABASE_URL)
 
 export const db = drizzle({client: sql});
 

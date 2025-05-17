@@ -1,0 +1,1 @@
+ALTER TYPE "public"."status_vehicle" ADD VALUE 'approval_pending';

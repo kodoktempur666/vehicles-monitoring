@@ -19,6 +19,7 @@ export const STATUS_VEHICLE = pgEnum("status_vehicle", [
   "available",
   "maintenance",
   "in_use",
+  "approval_pending",
 ]);
 export const STATUS_DRIVER = pgEnum("status_driver", [
   "available",
@@ -28,9 +29,9 @@ export const STATUS_DRIVER = pgEnum("status_driver", [
 export const TYPE_VEHICLE = pgEnum("type_vehicle", ["passenger", "cargo"]);
 
 export const APPROVED = pgEnum("approve_status", [
+  "pending",
   "approved_lv1",
-  "approved_lv2",
-  "not_approved",
+  "approved",
   "rejected",
 ]);
 
@@ -80,7 +81,10 @@ export const bookings = pgTable("bookings", {
   requesterId: uuid("requester_id")
     .references(() => users.id)
     .notNull(),
-  approverId: uuid("approver_id")
+  approver1Id: uuid("approver1_id")
+    .references(() => users.id)
+    .notNull(),
+  approver2Id: uuid("approver2_id")
     .references(() => users.id)
     .notNull(),
   driverId: uuid("driver_id")
@@ -105,6 +109,10 @@ export const history = pgTable("history", {
 
   requesterId: uuid("requester_id").notNull(),
   requesterName: varchar("requester_name", { length: 255 }).notNull(),
+  approver1Id: uuid("approver1_id").notNull(),
+  approver1Name: varchar("approver1_name", { length: 255 }).notNull(),
+  approver2Id: uuid("approver2_id").notNull(),
+  approver2Name: varchar("approver2_name", { length: 255 }).notNull(),
 
   driverId: uuid("driver_id").notNull(),
   driverName: varchar("driver_name", { length: 255 }).notNull(),
