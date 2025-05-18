@@ -33,6 +33,7 @@ export const APPROVED = pgEnum("approve_status", [
   "approved_lv1",
   "approved",
   "rejected",
+  "completed",
 ]);
 
 export const users = pgTable("users", {
@@ -124,6 +125,7 @@ export const history = pgTable("history", {
   destinationId: uuid("destination_id").notNull(),
   destinationName: varchar("destination_name", { length: 255 }).notNull(),
   destinationDistance: integer("destination_distance").notNull(),
+  totalFuel: integer("total_fuel").notNull(),
 
   startDate: date("start_date").notNull(),
   endDate: date("end_date").notNull(),

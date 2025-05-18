@@ -1,0 +1,1 @@
+ALTER TYPE "public"."approve_status" ADD VALUE 'completed';

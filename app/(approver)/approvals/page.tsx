@@ -5,34 +5,34 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { getUserRole } from '@/lib/actions/auth';
 import { getBookings, updateBookingLevel1, updateBookingLevel2 } from '@/lib/actions/booking';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Manager = () => {
-  const [bookings, setBookings] = React.useState<any[]>([]);
-  const [role, setRole] = React.useState<string>('');
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [bookings, setBookings] = useState([])
+  const [role, setRole] = useState("")
+  const [loading, setLoading] = useState(true);
 
+  const fetchBookings = async () => {
+    setLoading(true);
+    const data = await getBookings();
+    const userRole = await getUserRole();
+    setRole(userRole);
 
-  React.useEffect(() => {
-    const fetchBookings = async () => {
-      setLoading(true);
-      const data = await getBookings();
-      const userRole = await getUserRole();
-      setRole(userRole);
+    let filtered = [];
 
-      let filtered = [];
+    if (userRole === 'approver_l1') {
+      filtered = data.filter((b: any) => b.bookings.status === 'pending');
+    } else if (userRole === 'approver_l2') {
+      filtered = data.filter((b: any) => b.bookings.status === 'approved_lv1');
+    } else {
+      filtered = data;
+    }
 
-      if (userRole === 'approver_l1') {
-        filtered = data.filter((b: any) => b.bookings.status === 'pending');
-      } else if (userRole === 'approver_l2') {
-        filtered = data.filter((b: any) => b.bookings.status === 'approved_lv1');
-      } else {
-        filtered = data;
-      }
+    setBookings(filtered);
+    setLoading(false);
+  };
 
-      setBookings(filtered);
-      setLoading(false);
-    };
+  useEffect(() => {
 
     fetchBookings();
   }, []);
@@ -43,7 +43,7 @@ const Manager = () => {
     if (res.success) {
       console.log(res.data);
 
-      window.location.reload();
+      fetchBookings();
     } else {
       console.error(res.message);
     }
@@ -53,7 +53,7 @@ const Manager = () => {
     const res = await updateBookingLevel2(id);
     if (res.success) {
       console.log(res.data);
-      window.location.reload();
+      fetchBookings();
     } else {
       console.error(res.message);
     }
@@ -128,7 +128,7 @@ const Manager = () => {
                       ) : role === 'approver_l2' && booking.bookings.status === 'approved_lv1' ? (
                         <Button onClick={() => handleApproval2(booking.bookings.id)}>Approve (Level 2)</Button>
                       ) : (
-                        <Button disabled>Action</Button>
+                        <Button hidden>Action</Button>
                       )}
 
                     </TableCell>

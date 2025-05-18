@@ -28,6 +28,13 @@ export const getDrivers = async () => {
     return driversData;
 }
 
+
+export const getHistory = async () => {
+  const historyData = await db.select().from(history)
+
+  return historyData;
+}
+
 export const getBookings = async () => {
   const bookingsData = await db.select().from(bookings).innerJoin(vehicles, eq(vehicles.id, bookings.vehicleId))
     .innerJoin(users, eq(users.id, bookings.requesterId))
@@ -186,6 +193,8 @@ export const updateBookingLevel2 = async (id: string) => {
 
     const { booking, requester, driver, vehicle, destination } = fullBooking;
 
+    const totalFuel = booking.distance * vehicle.fuelConsumption;
+
     // Get approver1 and approver2 names (again, more accurate)
     const [approver1] = await db
       .select({ name: users.name })
@@ -227,6 +236,7 @@ export const updateBookingLevel2 = async (id: string) => {
       startDate: booking.startDate,
       endDate: booking.endDate,
       notes: booking.notes,
+      totalFuel: totalFuel,
     });
 
     return {
@@ -238,3 +248,36 @@ export const updateBookingLevel2 = async (id: string) => {
     return { success: false, message: "An error occurred during approval" };
   }
 };
+
+
+export const completeBooking = async (id: string) => {
+  try {
+    const updatedBooking = await db
+      .update(bookings)
+      .set({ status: "completed" })
+      .where(eq(bookings.id, id))
+      .returning();
+
+    const bookingRecord = updatedBooking[0];
+    if (!bookingRecord) throw new Error("Booking record not found");
+
+    await db
+      .update(vehicles)
+      .set({ status: "available" })
+      .where(eq(vehicles.id, bookingRecord.vehicleId));
+
+    await db
+      .update(drivers)
+      .set({ status: "available" })
+      .where(eq(drivers.id, bookingRecord.driverId));
+
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(bookingRecord)),
+    };
+  } catch (error) {
+    console.error("Error in completeBooking:", error);
+    return { success: false, message: "An error occurred during booking completion" };
+    
+  }
+}

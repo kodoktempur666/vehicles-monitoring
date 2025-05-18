@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-import { getBookings } from "@/lib/actions/booking"
+import { completeBooking, getBookings } from "@/lib/actions/booking"
 // import { BookingDialog } from "@/components/booking-dialog"
 
 const Bookings = () => {
@@ -32,28 +32,41 @@ const Bookings = () => {
     fetchBookings()
   }, [])
 
+  const handleBooking = async (id: string) => {
+    const res = await completeBooking(id)
 
-  
-    const getStatusBadge = (status: string) => {
+    if (res.success) {
+      console.log(res.data)
+      const updatedBookings = await getBookings()
+      setBookings(updatedBookings)
+    } else {
+      console.error(res.message)
+    }
+  }
+
+
+
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case "pending":
         return (
-          <Badge variant="outline" className="bg-yellow-100 text-yellow-800">
+          <Badge variant="outline" className="bg-yellow-800 text-white">
             Pending
           </Badge>
         )
       case "approved_lv1":
         return (
-          <Badge variant="outline" className="bg-blue-100 text-blue-800">
+          <Badge variant="outline" className="bg-blue-800 text-white">
             Approved lv 1
           </Badge>
         )
       case "approved":
         return (
-          <Badge variant="outline" className="bg-purple-100 text-purple-800">
+          <Badge variant="outline" className="bg-purple-800 text-white">
             Approved
           </Badge>
         )
+      
 
       case "rejected":
         return (
@@ -62,7 +75,7 @@ const Bookings = () => {
           </Badge>
         )
       default:
-        return <Badge variant="outline">{status}</Badge>
+        return <Badge variant="outline" className="bg-green-600 text-white">{status}</Badge>
     }
   }
   return (
@@ -88,7 +101,7 @@ const Bookings = () => {
             <TableHeader>
               <TableRow>
                 <TableHead>Destination</TableHead>
-                <TableHead>Vehicle Registration</TableHead>               
+                <TableHead>Vehicle Registration</TableHead>
                 <TableHead>Driver</TableHead>
                 <TableHead>Start Date</TableHead>
                 <TableHead>End Date</TableHead>
@@ -100,7 +113,7 @@ const Bookings = () => {
               {bookings.map((booking) => (
                 <TableRow key={booking.bookings.id}>
                   <TableCell>
-                      <span>{booking.destinations.name}</span>
+                    <span>{booking.destinations.name}</span>
                   </TableCell>
                   <TableCell>{booking.vehicles.regNumber}</TableCell>
                   <TableCell>{booking.drivers.name}</TableCell>
@@ -114,14 +127,21 @@ const Bookings = () => {
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
+                      {/* <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <Link href={`/bookings/${booking.id}`}>
+                        <Link >
                           <DropdownMenuItem>View</DropdownMenuItem>
                         </Link>
-                      </DropdownMenuContent>
+                      </DropdownMenuContent> */}
                     </DropdownMenu>
+                    <Button
+                      onClick={() => handleBooking(booking.bookings.id)}
+                      className={booking.bookings.status === "approved" ? "" : "hidden"}
+                    >
+                      Complete
+                    </Button>
+
                   </TableCell>
                 </TableRow>
               ))}

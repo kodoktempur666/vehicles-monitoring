@@ -37,8 +37,8 @@ const Management = () => {
     fetchMaintenance()
   }, [])
 
-  const handleMaintenance = async (vehicleId: string) => {
-    const res = await maintenanceStatus(vehicleId);
+  const handleMaintenance = async (id: string) => {
+    const res = await maintenanceStatus(id);
 
     if (res.success) {
       console.log("Maintenance status updated successfully");

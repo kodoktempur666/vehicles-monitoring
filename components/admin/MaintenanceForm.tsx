@@ -256,31 +256,7 @@ const MaintenanceForm = ({ }: Props) => {
                         </form>
                     </Form>
 
-                    {/* Debug Panel - Development Only */}
-                    {process.env.NODE_ENV === 'development' && (
-                        <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
-                            <details className="cursor-pointer">
-                                <summary className="font-medium text-sm text-gray-700 mb-2">
-                                    Debug Information
-                                </summary>
-                                <div className="text-xs space-y-1 text-gray-600">
-                                    <p>Form Valid: {form.formState.isValid ? '✅' : '❌'}</p>
-                                    <p>Is Submitting: {isSubmitting ? '⏳' : '✅'}</p>
-                                    <p>Is Loading: {isLoading ? '⏳' : '✅'}</p>
-                                    <p>Vehicles Count: {vehicles.length}</p>
-                                    <p>Available Vehicles: {availableVehicles.length}</p>
-                                    {Object.keys(form.formState.errors).length > 0 && (
-                                        <div>
-                                            <p className="font-medium">Errors:</p>
-                                            <pre className="text-xs bg-red-50 p-2 rounded border">
-                                                {JSON.stringify(form.formState.errors, null, 2)}
-                                            </pre>
-                                        </div>
-                                    )}
-                                </div>
-                            </details>
-                        </div>
-                    )}
+                
                 </CardContent>
             </Card>
         </div>

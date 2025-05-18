@@ -1,0 +1,1 @@
+ALTER TABLE "history" ADD COLUMN "total_fuel" integer NOT NULL;

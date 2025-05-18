@@ -181,7 +181,7 @@ const VehicleForm = ({
                         name="fuelConsumption"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Fuel Consumption (L/100km)</FormLabel>
+                                <FormLabel>Fuel Consumption (L/1km)</FormLabel>
                                 <FormControl>
                                     <Input
                                         placeholder="e.g., 8.5"

@@ -1,6 +1,6 @@
 # Tech Stack
 
-- Next.js
+- Next.js 15.3.2
 - TypeScript
 - TailwindCSS
 - PostgreSQL
@@ -8,6 +8,7 @@
 - Auth.js
 - NeonDB Serverless
 - Shadcn UI
+- Node.js 22.14.0
 
 ## Data Login
 
